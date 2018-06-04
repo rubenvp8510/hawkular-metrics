@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Red Hat, Inc. and/or its affiliates
+ * Copyright 2014-2018 Red Hat, Inc. and/or its affiliates
  * and other contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -586,7 +586,7 @@ public class MetricsServiceLifecycle {
     void destroy() {
         Future<?> stopFuture = lifecycleExecutor.submit(this::stopServices);
         try {
-            Futures.get(stopFuture, 1, MINUTES, Exception.class);
+            Futures.getChecked(stopFuture, Exception.class, 1, MINUTES);
         } catch (Exception e) {
             log.errorShutdownProblem(e);
         }
