@@ -29,7 +29,6 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 
 import org.hawkular.metrics.scheduler.api.JobsManager;
-import org.hawkular.metrics.schema.SchemaService;
 import org.hawkular.rx.cassandra.driver.RxSession;
 import org.hawkular.rx.cassandra.driver.RxSessionImpl;
 import org.joda.time.DateTime;
@@ -59,8 +58,6 @@ public abstract class BaseITest {
 
     protected static RxSession rxSession;
 
-    protected static SchemaService schemaService;
-
     protected static JobsManager jobsManager;
 
     private PreparedStatement truncateMetrics;
@@ -78,9 +75,6 @@ public abstract class BaseITest {
                 .build();
         session = cluster.connect();
         rxSession = new RxSessionImpl(session);
-
-        schemaService = new SchemaService(session, getKeyspace());
-        schemaService.run(Boolean.valueOf(System.getProperty("resetdb", "true")));
 
         session.execute("USE " + getKeyspace());
 
